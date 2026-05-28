@@ -50,6 +50,14 @@ app.MapPost("/game/{gameId}/guess/{playerNumber}/{letter}", (string gameId, int 
     }
 
     return Results.Ok(gameService.ConvertToDto(game));
+
+
+
+});
+
+app.MapGet("/health", () =>
+{
+    return "OK";
 });
 
 app.Run();
