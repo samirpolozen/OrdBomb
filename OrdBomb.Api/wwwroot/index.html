@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Letter Duel</title>
+</head>
+
+<body>
+
+  <h1>Letter Duel</h1>
+
+  <h2>Create Lobby</h2>
+
+  <input id="createNameInput" placeholder="Your name">
+
+  <button onclick="createLobby()">Create Lobby</button>
+
+  <h2>Join Lobby</h2>
+
+  <input id="joinNameInput" placeholder="Your name">
+
+  <input id="joinGameIdInput" placeholder="Lobby ID">
+
+  <button onclick="joinLobby()">Join Lobby</button>
+
+  <hr>
+
+  <h2>Game</h2>
+
+  <p id="myInfo"></p>
+
+  <input id="letterInput" maxlength="1" placeholder="Guess letter">
+
+  <button onclick="guessLetter()">Guess</button>
+
+  <br><br>
+
+  <div id="gameInfo"></div>
+
+  <script>
+    let currentGameId = "";
+    let myPlayerNumber = 0;
+
+    async function createLobby() {
+      let name = document.getElementById("createNameInput").value;
+
+      let response = await fetch(`/lobby/create/${name}`, {
+        method: "POST"
+      });
+
+      let game = await response.json();
+
+      currentGameId = game.id;
+      myPlayerNumber = 1;
+
+      showGame(game);
+
+      document.getElementById("myInfo").innerHTML =
+        `You are Player 1. Lobby ID: <b>${currentGameId}</b>`;
+    }
+
+    async function joinLobby() {
+      let name = document.getElementById("joinNameInput").value;
+      let gameId = document.getElementById("joinGameIdInput").value;
+
+      let response = await fetch(`/lobby/join/${gameId}/${name}`, {
+        method: "POST"
+      });
+
+      let game = await response.json();
+
+      currentGameId = game.id;
+      myPlayerNumber = 2;
+
+      showGame(game);
+
+      document.getElementById("myInfo").innerHTML =
+        `You are Player 2. Lobby ID: <b>${currentGameId}</b>`;
+    }
+
+    async function guessLetter() {
+      let letter = document.getElementById("letterInput").value;
+
+      let response = await fetch(`/game/${currentGameId}/guess/${myPlayerNumber}/${letter}`, {
+        method: "POST"
+      });
+
+      let game = await response.json();
+
+      showGame(game);
+
+      document.getElementById("letterInput").value = "";
+    }
+
+    async function loadGame() {
+      if (currentGameId === "") {
+        return;
+      }
+
+      let response = await fetch(`/game/${currentGameId}`);
+
+      let game = await response.json();
+
+      showGame(game);
+    }
+
+    function showGame(game) {
+      document.getElementById("gameInfo").innerHTML =
+        `
+                <p><b>Lobby ID:</b> ${game.id}</p>
+                <p><b>Player 1:</b> ${game.player1Name}</p>
+                <p><b>Player 2:</b> ${game.player2Name}</p>
+                <p><b>Word:</b> ${game.displayWord}</p>
+                <p><b>Guessed Letters:</b> ${game.guessedLetters}</p>
+                <p><b>Player 1 Score:</b> ${game.player1Score}</p>
+                <p><b>Player 2 Score:</b> ${game.player2Score}</p>
+                <p><b>Current Player:</b> ${game.currentPlayer}</p>
+                <p><b>Status:</b> ${game.status}</p>
+            `;
+    }
+    /*
+    function getDisplayWord(game) {
+        let result = "";
+
+        for (let i = 0; i < game.secretWord.length; i++) {
+          let letter = game.secretWord[i];
+
+          if (game.guessedLetters.includes(letter)) {
+            result += letter + " ";
+          }
+          else {
+            result += "_ ";
+          }
+        }
+
+        return result;
+      }
+        */
+
+    setInterval(loadGame, 2000);
+  </script>
+
+</body>
+
+</html>

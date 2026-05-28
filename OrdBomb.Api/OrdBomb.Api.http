@@ -1,0 +1,6 @@
+@OrdBomb.Api_HostAddress = http://localhost:5148
+
+GET {{OrdBomb.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
