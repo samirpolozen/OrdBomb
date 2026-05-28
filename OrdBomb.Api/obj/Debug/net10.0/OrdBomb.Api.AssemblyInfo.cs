@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OrdBomb.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2e7919ba6476653999c67cd0400753bb848b066f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e8045921b02ad2e9acc465aa0aca782674469dc2")]
 [assembly: System.Reflection.AssemblyProductAttribute("OrdBomb.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OrdBomb.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
